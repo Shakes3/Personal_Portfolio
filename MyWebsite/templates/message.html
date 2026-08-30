@@ -1,0 +1,498 @@
+<!-- <h1>Enter your message here below:</h1>
+
+<form method="POST" action="{% url 'message' %}">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Type your name here...">
+    <input type="email" name="email" placeholder="Type your email here...">
+    <input type="text" name="message" placeholder="Type your message here...">
+    <button type="submit">Send Message</button>
+</form> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05070f;
+  --bg2:#0b0f1e;
+  --cyan:#00ffe7;
+  --violet:#a855f7;
+  --pink:#f72585;
+  --glass:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);
+  --txt:#e2e8f0;
+  --txt2:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:'Space Grotesk',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:none;
+}
+#cur-glow{
+  position:fixed;width:350px;height:350px;
+  border-radius:50%;pointer-events:none;z-index:9999;
+  background:radial-gradient(circle,rgba(168,85,247,0.09) 0%,transparent 70%);
+  transform:translate(-50%,-50%);
+  transition:left .12s ease,top .12s ease;
+}
+#cur-dot{
+  position:fixed;width:10px;height:10px;
+  background:var(--violet);border-radius:50%;
+  pointer-events:none;z-index:10000;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 12px var(--violet),0 0 24px var(--violet);
+  transition:left .04s,top .04s;
+}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:1.2rem 5%;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(5,7,15,0.75);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.1rem;color:var(--cyan);
+  text-decoration:none;letter-spacing:1px;
+}
+.logo span{color:var(--violet)}
+.nav-links{list-style:none;display:flex;gap:2rem}
+.nav-links a{
+  color:var(--txt2);text-decoration:none;
+  font-size:.95rem;font-weight:500;transition:color .25s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+
+/* PAGE */
+.page-wrap{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:7rem 5% 4rem;
+  position:relative;overflow:hidden;
+}
+.page-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 55% 60% at 80% 30%,rgba(168,85,247,.12),transparent),
+    radial-gradient(ellipse 50% 50% at 10% 80%,rgba(0,255,231,.07),transparent);
+}
+.grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.contact-layout{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:1fr 1.3fr;
+  gap:3rem;
+  max-width:1100px;
+  width:100%;
+}
+/* INFO PANEL */
+.info-panel{}
+.sec-tag{
+  font-family:'JetBrains Mono',monospace;
+  color:var(--cyan);font-size:.85rem;
+  letter-spacing:2px;display:block;margin-bottom:.7rem;
+}
+.page-title{
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:700;line-height:1.15;margin-bottom:1.2rem;
+}
+.page-title span{
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.intro{color:var(--txt2);line-height:1.8;margin-bottom:2.5rem;font-size:1rem}
+.channels{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem}
+.channel{
+  display:flex;align-items:center;gap:1rem;
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:12px;padding:1rem 1.2rem;
+  text-decoration:none;color:var(--txt);
+  transition:all .3s;
+}
+.channel:hover{
+  border-color:rgba(0,255,231,.25);
+  background:rgba(0,255,231,.04);
+  transform:translateX(5px);
+}
+.ch-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(168,85,247,.12);
+  border:1px solid rgba(168,85,247,.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.ch-icon svg{width:20px;height:20px;color:var(--violet)}
+.ch-label{font-size:.78rem;color:var(--txt2);margin-bottom:.1rem}
+.ch-val{font-size:.92rem;font-weight:500}
+.avail{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:rgba(0,255,231,.06);
+  border:1px solid rgba(0,255,231,.15);
+  color:var(--cyan);
+  padding:.55rem 1rem;border-radius:999px;
+  font-size:.82rem;font-weight:500;
+}
+.avail-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--cyan);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* FORM CARD */
+.form-card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;padding:2.5rem;
+  backdrop-filter:blur(20px);
+  position:relative;overflow:hidden;
+}
+.form-card::before{
+  content:'';position:absolute;
+  top:-60px;right:-60px;
+  width:200px;height:200px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(168,85,247,.15),transparent 70%);
+  pointer-events:none;
+}
+.form-heading{
+  font-size:1.4rem;font-weight:700;
+  margin-bottom:2rem;
+}
+.form-heading span{color:var(--violet)}
+
+/* Django messages */
+.alert{
+  padding:.85rem 1rem;border-radius:10px;
+  margin-bottom:1.2rem;font-size:.9rem;
+}
+.alert-success{
+  background:rgba(0,255,231,.08);
+  border:1px solid rgba(0,255,231,.2);
+  color:var(--cyan);
+}
+.alert-error{
+  background:rgba(247,37,133,.08);
+  border:1px solid rgba(247,37,133,.2);
+  color:var(--pink);
+}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.f-group{margin-bottom:1.4rem}
+.f-label{
+  display:block;font-size:.82rem;
+  font-weight:600;color:var(--txt2);
+  margin-bottom:.5rem;letter-spacing:.3px;
+}
+.input-wrap{position:relative}
+.f-icon{
+  position:absolute;left:.9rem;top:50%;
+  transform:translateY(-50%);
+  width:18px;height:18px;
+  color:var(--txt2);pointer-events:none;
+}
+.f-input{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.8rem .9rem .8rem 2.7rem;
+  color:var(--txt);font-family:inherit;font-size:.93rem;
+  outline:none;transition:border-color .25s,box-shadow .25s;
+}
+.f-input::placeholder{color:rgba(148,163,184,.45)}
+.f-input:focus{
+  border-color:var(--violet);
+  box-shadow:0 0 0 3px rgba(168,85,247,.12);
+}
+.f-input.invalid{border-color:var(--pink)}
+textarea.f-input{
+  padding-top:.85rem;
+  resize:vertical;min-height:130px;
+}
+.ta-wrap .f-icon{top:1.1rem;transform:none}
+.f-err{
+  display:block;font-size:.78rem;
+  color:var(--pink);margin-top:.3rem;min-height:1em;
+}
+
+.btn-submit{
+  width:100%;display:flex;
+  align-items:center;justify-content:center;gap:.6rem;
+  padding:.95rem 2rem;
+  background:linear-gradient(135deg,var(--violet),#6d28d9);
+  color:#fff;
+  border:none;border-radius:10px;
+  font-family:inherit;font-size:1rem;font-weight:600;
+  cursor:pointer;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.btn-submit::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,.1),transparent);
+  transform:translateX(-100%);transition:transform .5s;
+}
+.btn-submit:hover::after{transform:translateX(100%)}
+.btn-submit:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 28px rgba(168,85,247,.45);
+}
+.btn-submit:active{transform:translateY(0)}
+.btn-submit svg{width:18px;height:18px}
+.spin{
+  width:18px;height:18px;
+  border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  display:none;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SUCCESS OVERLAY */
+.success-overlay{
+  position:absolute;inset:0;
+  background:rgba(5,7,15,.92);
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  border-radius:20px;z-index:10;
+  text-align:center;padding:2rem;
+}
+.success-overlay.show{display:flex}
+.success-icon{font-size:3.5rem;margin-bottom:1rem;animation:pop .5s ease}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.success-overlay h3{font-size:1.4rem;font-weight:700;margin-bottom:.5rem;color:var(--cyan)}
+.success-overlay p{color:var(--txt2);font-size:.95rem;margin-bottom:1.5rem}
+.btn-back{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.7rem 1.5rem;border-radius:8px;
+  background:var(--glass);border:1px solid var(--border);
+  color:var(--txt2);text-decoration:none;
+  font-size:.9rem;transition:all .25s;
+}
+.btn-back:hover{border-color:var(--cyan);color:var(--cyan)}
+
+footer{
+  text-align:center;padding:2rem;
+  border-top:1px solid var(--border);
+  color:var(--txt2);font-size:.88rem;
+}
+footer span{color:var(--cyan)}
+
+@media(max-width:900px){
+  .contact-layout{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  nav{padding:1rem 5%}
+  .nav-links{display:none}
+  .page-wrap{padding:5rem 5% 3rem}
+}
+</style>
+</head>
+<body>
+
+<div id="cur-glow"></div>
+<div id="cur-dot"></div>
+
+<nav>
+  <a href="{% url 'home' %}" class="logo">&lt;<span>Software Engineer</span>/&gt;</a>
+  <ul class="nav-links">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'home' %}#projects">Projects</a></li>
+    <li><a href="{% url 'home' %}#skills">Skills</a></li>
+    <li><a href="{% url 'message' %}" class="active">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-bg"></div>
+  <div class="grid-lines"></div>
+
+  <div class="contact-layout">
+
+    <!-- LEFT: INFO -->
+    <div class="info-panel">
+      <span class="sec-tag">// say hello</span>
+      <h1 class="page-title">Let's <span>Connect</span></h1>
+      <p class="intro">
+        I'm always excited about new projects, collaborations, or a friendly tech chat.
+        Drop me a message and I'll get back to you promptly!
+      </p>
+      <div class="channels">
+        <a href="mailto:you@example.com" class="channel">
+          <div class="ch-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <div class="ch-label">Email</div>
+            <div class="ch-val">you@example.com</div>
+          </div>
+        </a>
+        <a href="https://github.com/yourname" target="_blank" class="channel">
+          <div class="ch-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </div>
+          <div>
+            <div class="ch-label">GitHub</div>
+            <div class="ch-val">github.com/yourname</div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/yourname" target="_blank" class="channel">
+          <div class="ch-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          <div>
+            <div class="ch-label">LinkedIn</div>
+            <div class="ch-val">linkedin.com/in/yourname</div>
+          </div>
+        </a>
+      </div>
+      <div class="avail">
+        <span class="avail-dot"></span>
+        Open to freelance &amp; full-time roles
+      </div>
+    </div>
+
+    <!-- RIGHT: FORM -->
+    <div class="form-card">
+
+      <!-- Success overlay (shown after JS redirect or success flag) -->
+      {% if sent %}
+      <div class="success-overlay show">
+        <div class="success-icon">🚀</div>
+        <h3>Message Sent!</h3>
+        <p>Thanks for reaching out. I'll get back to you very soon.</p>
+        <a href="{% url 'home' %}" class="btn-back">
+          ← Back to Home
+        </a>
+      </div>
+      {% endif %}
+
+      <h2 class="form-heading">Send a <span>Message</span></h2>
+
+      <!-- Django messages framework alerts -->
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="alert {% if msg.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+            {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form id="contact-form" method="POST" action="{% url 'message' %}" novalidate>
+        {% csrf_token %}
+
+        <div class="form-row">
+          <div class="f-group">
+            <label class="f-label" for="name">Your Name</label>
+            <div class="input-wrap">
+              <svg class="f-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input class="f-input" id="name" name="name" type="text" placeholder="John Doe" autocomplete="name" required/>
+            </div>
+            <span class="f-err" id="err-name"></span>
+          </div>
+
+          <div class="f-group">
+            <label class="f-label" for="email">Email Address</label>
+            <div class="input-wrap">
+              <svg class="f-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <input class="f-input" id="email" name="email" type="email" placeholder="john@example.com" autocomplete="email" required/>
+            </div>
+            <span class="f-err" id="err-email"></span>
+          </div>
+        </div>
+
+        <div class="f-group">
+          <label class="f-label" for="message">Message</label>
+          <div class="input-wrap ta-wrap">
+            <svg class="f-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 10h8M8 14h5M20 12c0 4.418-3.582 8-8 8a8 8 0 01-5.292-1.993L3 19l1.007-3.708A8 8 0 1120 12z"/></svg>
+            <textarea class="f-input" id="message" name="message" rows="5" placeholder="Tell me about your project or just say hi..." required></textarea>
+          </div>
+          <span class="f-err" id="err-message"></span>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span id="btn-label">Send Message</span>
+          <svg id="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <div class="spin" id="btn-spin"></div>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 <span>YourName</span>. Built with Django &amp; ❤️</p>
+</footer>
+
+<script>
+// Cursor
+const glow=document.getElementById('cur-glow');
+const dot=document.getElementById('cur-dot');
+document.addEventListener('mousemove',e=>{
+  glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';
+  dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px';
+});
+
+// Form validation + loading state
+const form=document.getElementById('contact-form');
+const nameEl=document.getElementById('name');
+const emailEl=document.getElementById('email');
+const msgEl=document.getElementById('message');
+const spin=document.getElementById('btn-spin');
+const btnIcon=document.getElementById('btn-icon');
+const btnLabel=document.getElementById('btn-label');
+
+function validate(field,errId,check,msg){
+  const err=document.getElementById(errId);
+  if(!check(field.value)){
+    field.classList.add('invalid');
+    err.textContent=msg;return false;
+  }
+  field.classList.remove('invalid');err.textContent='';return true;
+}
+
+[nameEl,emailEl,msgEl].forEach(f=>{
+  f.addEventListener('input',()=>{f.classList.remove('invalid');
+    document.getElementById('err-'+f.id).textContent='';});
+});
+
+form.addEventListener('submit',e=>{
+  let ok=true;
+  ok=validate(nameEl,'err-name',v=>v.trim().length>1,'Please enter your name.')&&ok;
+  ok=validate(emailEl,'err-email',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),'Enter a valid email.')&&ok;
+  ok=validate(msgEl,'err-message',v=>v.trim().length>9,'Message must be at least 10 characters.')&&ok;
+  if(!ok){e.preventDefault();return;}
+  // Show spinner
+  btnLabel.textContent='Sending…';
+  btnIcon.style.display='none';
+  spin.style.display='block';
+});
+
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.boxShadow=
+    window.scrollY>20?'0 4px 30px rgba(0,0,0,.5)':'none';
+});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,474 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Hello Welcome my Portfolio</title>
+</head>
+<body>
+    <h1>I am {{ contact.name }} a Software engineer with skills in Python, Django, ASP.Net, C#, SQL/T-SQL etc</h1>
+    <h3>Here are the urls of my personal projects:</h3>
+    <ul>
+        {% for project in contact.projects %}
+            <li><a href="{{ project.url }}">{{ project.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Abhishek's Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05070f;
+  --bg2:#0b0f1e;
+  --cyan:#00ffe7;
+  --violet:#a855f7;
+  --pink:#f72585;
+  --glass:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);
+  --txt:#e2e8f0;
+  --txt2:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:'Space Grotesk',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:none;
+}
+/* ---- CURSOR ---- */
+#cur-glow{
+  position:fixed;width:350px;height:350px;
+  border-radius:50%;pointer-events:none;z-index:9999;
+  background:radial-gradient(circle,rgba(0,255,231,0.08) 0%,transparent 70%);
+  transform:translate(-50%,-50%);
+  transition:left .12s ease,top .12s ease;
+}
+#cur-dot{
+  position:fixed;width:10px;height:10px;
+  background:var(--cyan);border-radius:50%;
+  pointer-events:none;z-index:10000;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 12px var(--cyan),0 0 24px var(--cyan);
+  transition:left .04s,top .04s;
+}
+/* ---- NAV ---- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:1.2rem 5%;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(5,7,15,0.7);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.1rem;color:var(--cyan);
+  text-decoration:none;letter-spacing:1px;
+}
+.logo span{color:var(--violet)}
+.nav-links{list-style:none;display:flex;gap:2rem}
+.nav-links a{
+  color:var(--txt2);text-decoration:none;
+  font-size:.95rem;font-weight:500;
+  transition:color .25s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+/* ---- HERO ---- */
+#hero{
+  min-height:100vh;display:flex;
+  align-items:center;padding:0 8%;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 40%,rgba(168,85,247,.12),transparent),
+    radial-gradient(ellipse 50% 60% at 20% 70%,rgba(0,255,231,.07),transparent);
+}
+.grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.hero-content{position:relative;z-index:1;max-width:700px}
+.badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(0,255,231,.08);border:1px solid rgba(0,255,231,.2);
+  color:var(--cyan);padding:.35rem .9rem;border-radius:999px;
+  font-size:.82rem;font-weight:500;margin-bottom:1.5rem;
+}
+.badge-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--cyan);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-greeting{color:var(--txt2);font-size:1.1rem;margin-bottom:.4rem}
+.hero-name{
+  font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:700;line-height:1.1;
+  margin-bottom:1.2rem;letter-spacing:-1px;
+}
+.neon-c{
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.typewriter-row{
+  font-size:1.4rem;color:var(--txt2);
+  margin-bottom:1.4rem;display:flex;align-items:center;gap:.4rem;
+}
+#tw{color:var(--cyan);font-family:'JetBrains Mono',monospace}
+.tw-cur{color:var(--cyan);animation:blink .7s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-bio{color:var(--txt2);line-height:1.8;max-width:560px;margin-bottom:2.5rem;font-size:1.05rem}
+.btn-group{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.8rem 2rem;border-radius:8px;
+  font-family:inherit;font-size:.95rem;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:all .3s;
+  border:none;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--cyan),#00b3a1);
+  color:#000;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(0,255,231,.4)}
+.btn-outline{
+  background:transparent;
+  border:1px solid rgba(168,85,247,.5);
+  color:var(--violet);
+}
+.btn-outline:hover{
+  border-color:var(--violet);
+  background:rgba(168,85,247,.1);
+  transform:translateY(-2px);
+}
+/* ---- SECTION COMMON ---- */
+section{padding:6rem 8%}
+.sec-tag{
+  font-family:'JetBrains Mono',monospace;
+  color:var(--cyan);font-size:.85rem;
+  letter-spacing:2px;display:block;margin-bottom:.7rem;
+}
+.sec-title{
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:700;margin-bottom:.8rem;
+}
+.sec-title span{
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  background-clip:text;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.sec-sub{color:var(--txt2);margin-bottom:3rem;font-size:1rem}
+/* ---- PROJECTS ---- */
+#projects{background:var(--bg2)}
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1.5rem;
+}
+.proj-card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:16px;padding:1.8rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.proj-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,255,231,.06),transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+.proj-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(0,255,231,.25);
+  box-shadow:0 20px 60px rgba(0,255,231,.08);
+}
+.proj-card:hover::before{opacity:1}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.card-emoji{font-size:2rem}
+.card-actions{display:flex;gap:.7rem}
+.card-actions a{
+  color:var(--txt2);display:flex;
+  width:34px;height:34px;
+  border:1px solid var(--border);border-radius:8px;
+  align-items:center;justify-content:center;
+  transition:all .25s;text-decoration:none;
+}
+.card-actions a:hover{color:var(--cyan);border-color:var(--cyan)}
+.card-actions svg{width:16px;height:16px}
+.card-name{font-size:1.15rem;font-weight:600;margin-bottom:.5rem}
+.card-desc{color:var(--txt2);font-size:.9rem;line-height:1.7;margin-bottom:1.2rem}
+.card-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.4rem}
+.tag{
+  background:rgba(168,85,247,.1);
+  border:1px solid rgba(168,85,247,.2);
+  color:var(--violet);
+  font-size:.75rem;font-weight:500;
+  padding:.2rem .65rem;border-radius:999px;
+}
+.card-visit{
+  display:inline-flex;align-items:center;gap:.4rem;
+  color:var(--cyan);font-size:.88rem;font-weight:600;
+  text-decoration:none;transition:gap .25s;
+}
+.card-visit:hover{gap:.7rem}
+.card-visit svg{width:14px;height:14px}
+/* ---- SKILLS ---- */
+.skills-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.5rem}
+.skill-box{
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:14px;padding:1.5rem;
+  transition:border-color .3s;
+}
+.skill-box:hover{border-color:rgba(0,255,231,.2)}
+.skill-box h3{
+  font-size:.9rem;font-weight:600;
+  margin-bottom:1rem;letter-spacing:.5px;
+}
+.skill-box h3.c{color:var(--cyan)}
+.skill-box h3.v{color:var(--violet)}
+.skill-box h3.p{color:var(--pink)}
+.skill-list li{
+  list-style:none;color:var(--txt2);
+  font-size:.9rem;padding:.35rem 0;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.5rem;
+}
+.skill-list li:last-child{border-bottom:none}
+/* ---- FOOTER ---- */
+footer{
+  text-align:center;padding:2rem;
+  border-top:1px solid var(--border);
+  color:var(--txt2);font-size:.88rem;
+}
+footer span{color:var(--cyan)}
+/* ---- SCROLL ANIMATIONS ---- */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+/* ---- RESPONSIVE ---- */
+@media(max-width:768px){
+  nav{padding:1rem 5%}
+  .nav-links{display:none}
+  section{padding:4rem 5%}
+  #hero{padding:0 5%;padding-top:80px}
+}
+</style>
+</head>
+<body>
+
+<div id="cur-glow"></div>
+<div id="cur-dot"></div>
+
+<nav>
+  <a href="{% url 'home' %}" class="logo">&lt;<span>Software Engineer</span>/&gt;</a>
+  <ul class="nav-links">
+    <li><a href="{% url 'home' %}" class="active">Home</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="{% url 'message' %}">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-lines"></div>
+  <div class="hero-content">
+    <div class="badge"><span class="badge-dot"></span> Open to opportunities</div>
+    <p class="hero-greeting">Hello, I'm</p>
+    <h1 class="hero-name">
+      Abhishek <span class="neon-c">Kumar Singh</span>
+    </h1>
+    <div class="typewriter-row">
+      I build&nbsp;<span id="tw"></span><span class="tw-cur">|</span>
+    </div>
+    <p class="hero-bio">
+      A full-stack developer passionate about crafting elegant, performant digital experiences.
+      From Django/ASP.NET backends to polished frontends — I build things that matter.
+    </p>
+    <div class="btn-group">
+      <a href="#projects" class="btn btn-primary">
+        Explore Work
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="{% url 'message' %}" class="btn btn-outline">Get In Touch</a>
+      <a href="media/Abhishek_Singh_SoftwareEngineer.pdf" class="btn btn-outline" download>Resume</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <span class="sec-tag">// my work</span>
+    <h2 class="sec-title">Featured <span>Projects</span></h2>
+    <p class="sec-sub">Things I've built with passion and purpose.</p>
+  </div>
+
+  <div class="projects-grid">
+
+    <article class="proj-card reveal">
+      <div class="card-top">
+        <span class="card-emoji">🐾</span>
+        <div class="card-actions">
+          <a href="https://github.com/" target="_blank" title="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="#" target="_blank" title="Live">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+      <h3 class="card-name">DogHostel</h3>
+      <p class="card-desc">A full-featured dog boarding web app built with Django. Features admin portal, bookings, and service listings.</p>
+      <div class="card-tags">
+        <span class="tag">Python</span><span class="tag">Django</span><span class="tag">SQLite</span>
+      </div>
+      <a href="#" class="card-visit">Visit Project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </article>
+
+    <article class="proj-card reveal">
+      <div class="card-top">
+        <span class="card-emoji">📊</span>
+        <div class="card-actions">
+          <a href="https://github.com/" target="_blank" title="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="#" target="_blank" title="Live">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+      <h3 class="card-name">Fatal Force Analysis</h3>
+      <p class="card-desc">Data analysis on police fatal shooting records combined with US census data to uncover social trends.</p>
+      <div class="card-tags">
+        <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Seaborn</span>
+      </div>
+      <a href="#" class="card-visit">Visit Project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </article>
+
+    <article class="proj-card reveal">
+      <div class="card-top">
+        <span class="card-emoji">🌐</span>
+        <div class="card-actions">
+          <a href="https://github.com/" target="_blank" title="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="#" title="Live">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+      <h3 class="card-name">This Portfolio</h3>
+      <p class="card-desc">A custom Django portfolio with neon aesthetics, dynamic project showcase, and a contact system.</p>
+      <div class="card-tags">
+        <span class="tag">Django</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+      </div>
+      <a href="#" class="card-visit">You're here! <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </article>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <span class="sec-tag">// my toolkit</span>
+    <h2 class="sec-title">Skills &amp; <span>Technologies</span></h2>
+  </div>
+  <div class="skills-wrap reveal">
+    <div class="skill-box">
+      <h3 class="c">Backend</h3>
+      <ul class="skill-list">
+        <li>🐍 Python</li>
+        <li>🎸 Django</li>
+        <li>🗃️ SQL / SQLite</li>
+        <li>🔑 REST APIs</li>
+      </ul>
+    </div>
+    <div class="skill-box">
+      <h3 class="v">Frontend</h3>
+      <ul class="skill-list">
+        <li>🌐 HTML5</li>
+        <li>🎨 CSS3</li>
+        <li>⚡ JavaScript</li>
+        <li>📱 Responsive Design</li>
+      </ul>
+    </div>
+    <div class="skill-box">
+      <h3 class="p">Data & Tools</h3>
+      <ul class="skill-list">
+        <li>🐙 Git / GitHub</li>
+        <li>📊 Pandas / NumPy</li>
+        <li>🔮 Matplotlib</li>
+        <li>📈 Seaborn</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 <span>Abhishek Singh</span>. Built with Django</p>
+</footer>
+
+<script>
+// Cursor
+const glow = document.getElementById('cur-glow');
+const dot  = document.getElementById('cur-dot');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top  = e.clientY + 'px';
+  dot.style.left  = e.clientX + 'px';
+  dot.style.top   = e.clientY + 'px';
+});
+
+// Typewriter
+const words = ['web apps.', 'clean APIs.', 'cool stuff.', 'Django magic.'];
+let wi = 0, ci = 0, del = false;
+const tw = document.getElementById('tw');
+function type() {
+  const w = words[wi];
+  tw.textContent = del ? w.slice(0, ci--) : w.slice(0, ci++);
+  if (!del && ci > w.length) { del = true; setTimeout(type, 1200); return; }
+  if (del && ci < 0) { del = false; wi = (wi + 1) % words.length; ci = 0; }
+  setTimeout(type, del ? 55 : 100);
+}
+type();
+
+// Card mouse glow
+document.querySelectorAll('.proj-card').forEach(c => {
+  c.addEventListener('mousemove', e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    c.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+  });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Nav scroll shadow
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow =
+    window.scrollY > 20 ? '0 4px 30px rgba(0,0,0,.5)' : 'none';
+});
+</script>
+</body>
+</html>
