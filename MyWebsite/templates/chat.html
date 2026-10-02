@@ -1,0 +1,15 @@
+<form method="POST" action="{% url 'chat' %}">
+    {% csrf_token %}
+
+    <input type="text" name="message"
+           placeholder="Enter your message" required>
+
+    <button type="submit">Send</button>
+</form>
+<h3>
+
+    <!-- <p>AI Response:{{ ai_response }}</p> -->
+
+    <pre><code id="json-output">{{ ai_response }}</code></pre>
+
+</h3>
